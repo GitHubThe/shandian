@@ -1,8 +1,8 @@
 package com.developer.shan;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.os.Bundle;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +12,7 @@ import com.developer.shan.ui.fragment.BaseFragment;
 import com.developer.shan.ui.fragment.CategoryFragment;
 import com.developer.shan.ui.fragment.HomePageFragment;
 import com.developer.shan.ui.fragment.MineFragment;
+import com.developer.shan.ui.fragment.RecordFragment;
 import com.developer.shan.utils.FragmentUtils;
 
 import butterknife.BindView;
@@ -37,16 +38,19 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initView(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            mFragments = new BaseFragment[3];
+            mFragments = new BaseFragment[4];
             mFragments[0] = HomePageFragment.newInstance();
-            mFragments[1] = CategoryFragment.newInstance();
-            mFragments[2] = MineFragment.newInstance();
+            mFragments[1] = RecordFragment.newInstance();
+            mFragments[2] = CategoryFragment.newInstance();
+            mFragments[3] = MineFragment.newInstance();
+
             FragmentUtils.addMultiple(getSupportFragmentManager(), R.id.content, mCurrPosition, mFragments);
         } else {
             mCurrPosition = savedInstanceState.getInt("currPosition");
             mFragments[0] = findFragment(HomePageFragment.class);
-            mFragments[1] = findFragment(CategoryFragment.class);
-            mFragments[2] = findFragment(MineFragment.class);
+            mFragments[1] = findFragment(RecordFragment.class);
+            mFragments[2] = findFragment(CategoryFragment.class);
+            mFragments[3] = findFragment(MineFragment.class);
 
             if (mCurrPosition != 0) {
                 updateNavigationBarState(mCurrPosition);
@@ -79,11 +83,14 @@ public class MainActivity extends BaseActivity {
                     case R.id.item_home_page:
                         showHideFragment(0);
                         break;
-                    case R.id.item_category:
+                    case R.id.item_record:
                         showHideFragment(1);
                         break;
-                    case R.id.item_mine:
+                    case R.id.item_category:
                         showHideFragment(2);
+                        break;
+                    case R.id.item_mine:
+                        showHideFragment(3);
                         break;
                 }
                 return true;

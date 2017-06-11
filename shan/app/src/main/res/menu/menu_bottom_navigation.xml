@@ -4,6 +4,11 @@
         android:id="@+id/item_home_page"
         android:icon="@mipmap/ic_tab_home_page"
         android:title="@string/title_homePage"/>
+
+    <item
+        android:id="@+id/item_record"
+        android:icon="@mipmap/ic_tab_notification"
+        android:title="@string/title_record"/>
     <item
         android:id="@+id/item_category"
         android:icon="@mipmap/ic_tab_category"
@@ -12,4 +17,5 @@
         android:id="@+id/item_mine"
         android:icon="@mipmap/ic_tab_mine"
         android:title="@string/title_mine"/>
+
 </menu>

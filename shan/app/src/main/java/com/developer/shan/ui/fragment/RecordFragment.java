@@ -15,11 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.developer.shan.R;
-import com.developer.shan.model.PmModel;
 import com.developer.shan.model.TabModel;
-import com.developer.shan.model.entity.PmList;
 import com.developer.shan.model.entity.Topic;
-import com.developer.shan.mvp.presenter.TopicListPresenter;
+import com.developer.shan.mvp.presenter.RecordPresenter;
 import com.developer.shan.mvp.view.MvpView;
 import com.developer.shan.utils.DateUtils;
 import com.developer.shan.utils.ImageLoader;
@@ -35,24 +33,21 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TopicListFragment extends BaseFragment implements MvpView {
-
-    private static final String TAG = TopicListFragment.class.getName();
+public class RecordFragment extends BaseFragment implements MvpView {
 
     @BindView(R.id.topicRecyclerView)
     RecyclerView mTopicRecyclerView;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mRefreshLayout;
 
-    private TopicListPresenter mPresenter = new TopicListPresenter();
+    private RecordPresenter mPresenter = new RecordPresenter();
     private String mTab;
     private TopicAdapter mAdapter = new TopicAdapter();
-    private List<PmList> mTopicList = new ArrayList<>();
+    private List<Topic> mTopicList = new ArrayList<>();
 
-    public static TopicListFragment instance(String tab) {
-        TopicListFragment fragment = new TopicListFragment();
+    public static RecordFragment newInstance() {
         Bundle bundle = new Bundle();
-        bundle.putString("tab", tab);
+        RecordFragment fragment = new RecordFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -66,10 +61,9 @@ public class TopicListFragment extends BaseFragment implements MvpView {
         }
     }
 
-
     @Override
     public int setContentView() {
-        return R.layout.fragment_topic_list;
+        return R.layout.fragment_record;
     }
 
     @Override
@@ -131,7 +125,7 @@ public class TopicListFragment extends BaseFragment implements MvpView {
         mRefreshLayout.setRefreshing(false);
     }
 
-    public void notifySuccess(PmModel tabModel, boolean refresh) {
+    public void notifySuccess(TabModel tabModel, boolean refresh) {
         mRefreshLayout.setRefreshing(false);
         if (refresh) {
             mTopicList.clear();
@@ -151,7 +145,7 @@ public class TopicListFragment extends BaseFragment implements MvpView {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       // TopicDetailActivity.start((BaseActivity) getActivity(), mTopicList.get(holder.getAdapterPosition()).getId());
+                        // TopicDetailActivity.start((BaseActivity) getActivity(), mTopicList.get(holder.getAdapterPosition()).getId());
                     }
                 });
                 return holder;
@@ -164,9 +158,8 @@ public class TopicListFragment extends BaseFragment implements MvpView {
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof TopicHolder) {
                 TopicHolder topicHolder = (TopicHolder) holder;
-                PmList topic = mTopicList.get(position);
-                topicHolder.replyCount.setText(String.valueOf(topic.getPm_name()));
-               /* ImageLoader.loadUrl(topicHolder.avatar, topic.getAuthor().getAvatar_url());
+                Topic topic = mTopicList.get(position);
+                ImageLoader.loadUrl(topicHolder.avatar, topic.getAuthor().getAvatar_url());
                 if (topic.isTop()) {
                     topicHolder.tag.setText("置顶");
                 } else if (topic.isGood()) {
@@ -179,7 +172,7 @@ public class TopicListFragment extends BaseFragment implements MvpView {
                 topicHolder.title.setText(topic.getTitle());
                 topicHolder.lastReply.setText(String.format(getString(R.string.last_reply), DateUtils.format(topic.getLast_reply_at())));
                 topicHolder.replyCount.setText(String.valueOf(topic.getReply_count()));
-                topicHolder.visitCount.setText(String.valueOf(topic.getVisit_count()));*/
+                topicHolder.visitCount.setText(String.valueOf(topic.getVisit_count()));
             } else if (holder instanceof FooterHolder) {
                 ((FooterHolder) holder).footerInfo.setText(mPresenter.hasNextPage() ? "加载中..." : "已加载全部内容!");
             }
