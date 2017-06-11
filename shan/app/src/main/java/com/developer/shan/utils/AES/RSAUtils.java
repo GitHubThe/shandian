@@ -236,8 +236,8 @@ public class RSAUtils {
         try
         {
             byte[] buffer = Base64Utils.decode(privateKeyStr);
-            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
-           // PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(buffer);
+            //X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
+            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(buffer);
             KeyFactory keyFactory = KeyFactory.getInstance(RSA);
             return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
         } catch (NoSuchAlgorithmException e)
