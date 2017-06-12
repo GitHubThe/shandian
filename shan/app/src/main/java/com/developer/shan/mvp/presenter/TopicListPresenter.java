@@ -1,9 +1,16 @@
 package com.developer.shan.mvp.presenter;
 
+import com.developer.shan.BaseApplication;
 import com.developer.shan.api.CNodeApi;
 import com.developer.shan.model.PmModel;
+import com.developer.shan.ui.fragment.HomePageFragment;
 import com.developer.shan.ui.fragment.TopicListFragment;
+import com.developer.shan.utils.AES.AESUtils;
 import com.developer.shan.utils.LogUtils;
+import com.developer.shan.utils.SharedPreferenceUtils;
+import com.google.gson.Gson;
+
+import java.util.HashMap;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -19,6 +26,7 @@ public class TopicListPresenter extends BasePresenter<TopicListFragment> {
     private String mTab;
     private boolean mHasNextPage = true;
     private boolean mLoading = false;
+    private String key;
 
 
     public void refresh() {
@@ -36,7 +44,7 @@ public class TopicListPresenter extends BasePresenter<TopicListFragment> {
             return;
         }
         mLoading = true;
-        mCompositeSubscription.add(getObservable(pageIndex).subscribeOn(Schedulers.io())
+        mCompositeSubscription.add(getObservable().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<PmModel>() {
                     @Override
@@ -65,13 +73,20 @@ public class TopicListPresenter extends BasePresenter<TopicListFragment> {
 
     }
 
-    private Observable<PmModel> getObservable(int pageIndex) {
-        return CNodeApi.getCNodeService().getSearchList("201", pageIndex, PAGE_LIMIT, "0", "abs");
-       /* if (mTab == null) {
-            return CNodeApi.getCNodeService().getTopicPage(pageIndex, PAGE_LIMIT, true);
-        } else {
-            return CNodeApi.getCNodeService().getTabByName(mTab, pageIndex, PAGE_LIMIT, true);
-        }*/
+    private Observable<PmModel> getObservable() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("package", BaseApplication.getPackageName1());
+        map.put("channel", BaseApplication.getChanel());
+        map.put("version", BaseApplication.getVersionName());
+        map.put("app_version", BaseApplication.getVersionCode()+"");
+        map.put("platform", BaseApplication.getPlatform());
+        key = SharedPreferenceUtils.getString(HomePageFragment.KEY, "");
+        String str = new Gson().toJson(map);
+        LogUtils.debug(LOG_TAG, str);
+        String decryptData  =  AESUtils.encrypt(key, str);
+        LogUtils.debug(LOG_TAG, decryptData);
+       // return null;
+      return CNodeApi.getCNodeService().getHome(decryptData);
     }
 
     public void setTab(String tab) {

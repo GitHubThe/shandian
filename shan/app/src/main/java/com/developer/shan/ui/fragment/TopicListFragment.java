@@ -75,7 +75,7 @@ public class TopicListFragment extends BaseFragment implements MvpView {
     @Override
     public void lazyLoad() {
         if (mTopicList.size() == 0) {
-           // mPresenter.refresh();
+            mPresenter.refresh();
         }
     }
 

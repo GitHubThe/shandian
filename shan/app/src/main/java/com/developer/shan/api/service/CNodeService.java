@@ -4,7 +4,11 @@ import com.developer.shan.model.EncryptDataModel;
 import com.developer.shan.model.PmModel;
 import com.developer.shan.model.TabModel;
 
+import java.util.Map;
+
+import retrofit2.http.FieldMap;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -15,6 +19,8 @@ import rx.Observable;
 public interface CNodeService {
 
 
+    @POST("/main/index")
+    Observable<PmModel> getHome(@);
     //测试接口
     /**
      * 根据tab名字获取tab文章列表
@@ -22,9 +28,9 @@ public interface CNodeService {
      *
      * @return
      */
-    @GET("PlasApp")
-    Observable<PmModel> getSearchList(@Query("type") String type, @Query("page") Integer pageIndex, @Query("limit") Integer limit,
-                                      @Query("genre") String genre, @Query("key") String key);
+    @POST("/main/index")
+    Observable<PmModel> getHomePage(@Query("package") String pack, @Query("channel") String channel, @Query("version") String version,
+                                      @Query("app_version") Integer app_version, @Query("platform") String platform);
 
     /**
      * APP启动获取

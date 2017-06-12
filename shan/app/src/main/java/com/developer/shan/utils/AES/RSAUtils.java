@@ -112,7 +112,7 @@ public class RSAUtils {
     {
         try
         {
-            Cipher cipher = Cipher.getInstance(RSA);
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             return cipher.doFinal(encryptedData);
         } catch (Exception e)
@@ -238,14 +238,14 @@ public class RSAUtils {
             byte[] buffer = Base64Utils.decode(privateKeyStr);
             //X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(buffer);
-            KeyFactory keyFactory = KeyFactory.getInstance(RSA);
+            KeyFactory keyFactory = KeyFactory.getInstance(RSA, "BC");
             return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
         } catch (NoSuchAlgorithmException e)
         {
             throw new Exception("无此算法");
         } catch (InvalidKeySpecException e)
         {
-            throw new Exception(e);
+            throw new Exception("私钥无效");
         } catch (NullPointerException e)
         {
             throw new Exception("私钥数据为空");

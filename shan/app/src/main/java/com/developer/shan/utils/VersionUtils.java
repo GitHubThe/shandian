@@ -3,8 +3,6 @@ package com.developer.shan.utils;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 
 /**
  * Created by Administrator on 2016/6/15 0015.
