@@ -57,7 +57,7 @@ public class SplashActivity extends Activity implements ServiceConnection {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(this);
+//        unbindService(this);
     }
 
 
