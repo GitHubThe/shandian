@@ -39,10 +39,11 @@ public class JsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
 
         String strResult = response.substring(1, response.length() - 1);
         String key = SharedPreferenceUtils.getString(HomePageFragment.KEY, "");
-        String result = AESUtils.decrypt(key,strResult);//解密
-        Log.i("xiaozhang", "解密的服务器数据：" + result);
-        HomeModel pageBean = mGson.fromJson(result, HomeModel.class);
-        return (T) pageBean;
+        //String result = AESUtils.decrypt(key,strResult);//解密
+       // Log.i("xiaozhang", "解密的服务器数据：" + result);
+       // HomeModel pageBean = mGson.fromJson(result, HomeModel.class);
+      //  return (T) pageBean;
+        return null;
 
 
     }

@@ -39,10 +39,11 @@ public class JsonRequestBodyConverter<T> implements Converter<T, RequestBody> {
         APIBodyData data = new APIBodyData();
         Log.i("xiaozhang", "request中传递的json数据：" + value.toString());
         String key = SharedPreferenceUtils.getString(HomePageFragment.KEY, "");
-        data.setData(AESUtils.encrypt(key, value.toString()));
-        String postBody = gson.toJson(data); //对象转化成json
-        Log.i("xiaozhang", "转化后的数据：" + postBody);
-        return RequestBody.create(MEDIA_TYPE, postBody);
+        //data.setData(AESUtils.encrypt(key, value.toString()));
+        //String postBody = gson.toJson(data); //对象转化成json
+       // Log.i("xiaozhang", "转化后的数据：" + postBody);
+        //return RequestBody.create(MEDIA_TYPE, postBody);
+        return null;
     }
 
 }
