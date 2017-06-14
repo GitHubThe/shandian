@@ -1,12 +1,11 @@
 package com.developer.shan.api.service;
 
 import com.developer.shan.model.EncryptDataModel;
-import com.developer.shan.model.PmModel;
+import com.developer.shan.model.HomeModel;
 import com.developer.shan.model.TabModel;
 
-import java.util.Map;
-
-import retrofit2.http.FieldMap;
+import retrofit2.http.Body;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -18,9 +17,14 @@ import rx.Observable;
 
 public interface CNodeService {
 
+    //app更新接口
+    @POST("/main/config")
+    Observable<HomeModel> getUpdate(@Body String data);
 
+    //首页接口
+    @FormUrlEncoded
     @POST("/main/index")
-    Observable<PmModel> getHome(@);
+    Observable<HomeModel> getHome(@Body String data);
     //测试接口
     /**
      * 根据tab名字获取tab文章列表
@@ -29,8 +33,8 @@ public interface CNodeService {
      * @return
      */
     @POST("/main/index")
-    Observable<PmModel> getHomePage(@Query("package") String pack, @Query("channel") String channel, @Query("version") String version,
-                                      @Query("app_version") Integer app_version, @Query("platform") String platform);
+    Observable<HomeModel> getHomePage(@Query("package") String pack, @Query("channel") String channel, @Query("version") String version,
+                                      @Query("app_version") Integer app_version, @Query("platform") String platform, @Query("device_id") String id);
 
     /**
      * APP启动获取

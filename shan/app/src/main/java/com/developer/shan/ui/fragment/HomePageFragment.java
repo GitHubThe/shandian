@@ -2,6 +2,7 @@ package com.developer.shan.ui.fragment;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -16,11 +17,8 @@ import com.developer.shan.utils.AES.RSAUtils;
 import com.developer.shan.utils.DevicesUtils;
 import com.developer.shan.utils.FragmentUtils;
 import com.developer.shan.utils.LogUtils;
-import com.developer.shan.utils.NetWorkUtils;
 import com.developer.shan.utils.PermissionUtils;
 import com.developer.shan.utils.SharedPreferenceUtils;
-import com.developer.shan.utils.TimeUtils;
-import com.developer.shan.utils.VersionUtils;
 
 import org.json.JSONObject;
 
@@ -33,8 +31,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static android.R.attr.versionCode;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,11 +40,6 @@ public class HomePageFragment extends BaseFragment  {
     private static final String LOG_TAG = "HomePageFragment";
     public static final String SIV = "siv";
     public static final String KEY = "key";
-    private Boolean hasSim;
-    private String netWorkType;
-    private String timeStr;
-
-
 
     public static HomePageFragment newInstance() {
         Bundle bundle = new Bundle();
@@ -75,14 +66,8 @@ public class HomePageFragment extends BaseFragment  {
         } else {
             FragmentUtils.findFragment(getChildFragmentManager(), TopicListFragment.class).setUserVisibleHint(true);
         }
-        initView();
-        startApp();
-    }
 
-    private void initView() {
-        hasSim = DevicesUtils.hasSimCard(BaseApplication.getContext());
-        netWorkType = NetWorkUtils.getNetWorkStatus(BaseApplication.getContext());
-        timeStr = TimeUtils.getTime();
+        startApp();
     }
 
     private void startApp() {
@@ -110,6 +95,7 @@ public class HomePageFragment extends BaseFragment  {
                                 JSONObject jsonObject = new JSONObject(decryptStr);
                                 String siv = jsonObject.getString("siv");
                                 String key = jsonObject.getString("key");
+                                LogUtils.debug(LOG_TAG, decryptStr);
                                 SharedPreferenceUtils.save("siv", siv);
                                 SharedPreferenceUtils.save("key", key);
                             } catch (Exception e) {
@@ -122,7 +108,7 @@ public class HomePageFragment extends BaseFragment  {
     }
 
     private Observable<EncryptDataModel> getObservable() {
-        return CNodeApi.getCNodeService().appStart(BaseApplication.getDeviceId(getActivity()), hasSim, netWorkType, timeStr, BaseApplication.getPlatform(),
+        return CNodeApi.getCNodeService().appStart(BaseApplication.getDeviceId(getActivity()), BaseApplication.hasSim(), BaseApplication.getNetWorkType(), BaseApplication.getTimeStr(), BaseApplication.getPlatform(),
                 BaseApplication.getVersionName(), BaseApplication.getVersionCode(), BaseApplication.getChanel());
     }
 
